@@ -11,8 +11,6 @@ import Login from "./pages/Login";
 import {CustomContextProvider} from './context';
 
 const App = () => {
-  const [, forceUpdate] = React.useState("")
-
   return (
     <BrowserRouter>
       <CustomContextProvider>
@@ -24,7 +22,7 @@ const App = () => {
             <Route path="*" element={<NoPage />} />
           </Route>
         </Routes>
-        <Login callback={forceUpdate}/>
+        <Login />
       </CustomContextProvider>
     </BrowserRouter>
   )

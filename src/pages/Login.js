@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {CustomContext} from '../context';
 
-function Login({callback}) {
+function Login() {
     const [inputs, setInputs] = useState({});
 
     const [userState, usersDispatch ] = React.useContext(CustomContext);
@@ -27,7 +27,6 @@ function Login({callback}) {
                     email: inputs.email,
                 });
             };
-            callback(Date());
         }
     }
 
