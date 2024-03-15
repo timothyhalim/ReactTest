@@ -1,7 +1,10 @@
 import React  from 'react';
 import { Outlet, Link } from "react-router-dom";
+import {reducer, initialState} from '../reducer';
 
 const Layout = () => {
+  const [userState, usersDispatch ] = React.useReducer(reducer, initialState);
+  
   return (
     <>
       <nav>
@@ -17,6 +20,7 @@ const Layout = () => {
           </li>
         </ul>
       </nav>
+      <h1>Welcome {userState.currentUser}</h1>
 
       <Outlet />
     </>
