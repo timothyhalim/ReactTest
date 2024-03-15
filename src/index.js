@@ -8,39 +8,34 @@ import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import Login from "./pages/Login";
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    
-    this.state = {
-      isAuthenticated : false
-    }
-  }
-  
-  setAuthenticated = (value) => {
-    this.setState({
-      isAuthenticated: value
-    });
-  }
+import CustomContext from './context';
+import {reducer, initialState} from './reducer';
 
-  render() {
-    if (this.state.isAuthenticated) {
-      return (
-        <BrowserRouter>
+const App = () => {
+  const [update, forceUpdate] = React.useState("")
+  const [userState, usersDispatch ] = React.useReducer(reducer, initialState);
+
+  const providerState = {userState, usersDispatch};
+
+  console.log(userState.currentUser);
+
+  if (userState.currentUser) {
+    return (
+      <BrowserRouter>
+        <CustomContext.Provider value={providerState} >
           <Routes>
-            <Route path="/" element={<Layout isAuthenticated={this.state.isAuthenticated}/>}>
+            <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="blogs" element={<Blogs />} />
               <Route path="contact" element={<Contact />} />
-              <Route path="login" element={<Login />} />
               <Route path="*" element={<NoPage />} />
             </Route>
           </Routes>
-        </BrowserRouter>
-      )
-    } else {
-      return <Login setAuthenticated={this.setAuthenticated}/>
-    }
+        </CustomContext.Provider>
+      </BrowserRouter>
+    )
+  } else {
+    return <Login callback={forceUpdate}/>
   }
 }
 

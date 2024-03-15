@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import {reducer, initialState} from '../reducer';
 
-function Login({setAuthenticated}) {
+function Login({callback}) {
     const [inputs, setInputs] = useState({});
+
+    const [userState, usersDispatch ] = React.useReducer(reducer, initialState);
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -11,25 +14,43 @@ function Login({setAuthenticated}) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = {
-            ...inputs
+        console.log(inputs);
+
+        // Check account
+        if (!userState.accounts.includes(inputs.email.toLowerCase())) {
+            usersDispatch({
+                type:"REGISTER", 
+                email: inputs.email,
+            });
         }
-        
-        if (inputs.username === "test") {
-            setAuthenticated(true);
-        }
+
+        usersDispatch({
+            type:"AUTHENTICATE", 
+            email: inputs.email,
+        });
+
+        callback(Date());
     }
 
     return (
         <form onSubmit={handleSubmit}>
-            <label>Enter the password (test):
-                <input 
-                    type="text" 
-                    name="username" 
-                    value={inputs.username || ""} 
-                    onChange={handleChange}
-                />
-            </label>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <label>Email:</label>
+                        </td>
+                        <td>
+                            <input 
+                                type="text" 
+                                name="email" 
+                                value={inputs.email || ""} 
+                                onChange={handleChange}
+                                />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
             <input type="submit" />
         </form>
     )
