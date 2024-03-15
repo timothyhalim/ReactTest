@@ -1,10 +1,10 @@
 import React  from 'react';
-import {reducer, initialState} from '../reducer';
+import {CustomContext} from '../context';
 
 
 const Contact = () => {
-    const [userState, usersDispatch ] = React.useReducer(reducer, initialState);
-  
+    const [userState, usersDispatch ] = React.useContext(CustomContext);
+
     return (
         <>
             <h1>Contact Me</h1>

@@ -1,10 +1,10 @@
 import React  from 'react';
 import { Outlet, Link } from "react-router-dom";
-import {reducer, initialState} from '../reducer';
+import {CustomContext} from '../context';
 
 const Layout = () => {
-  const [userState, usersDispatch ] = React.useReducer(reducer, initialState);
-  
+  const [userState, usersDispatch ] = React.useContext(CustomContext);
+
   return (
     <>
       <nav>

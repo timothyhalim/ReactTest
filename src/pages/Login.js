@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import {reducer, initialState} from '../reducer';
+import {CustomContext} from '../context';
 
 function Login({callback}) {
     const [inputs, setInputs] = useState({});
 
-    const [userState, usersDispatch ] = React.useReducer(reducer, initialState);
+    const [userState, usersDispatch ] = React.useContext(CustomContext);
 
     const handleChange = (event) => {
         const name = event.target.name;
@@ -14,25 +14,26 @@ function Login({callback}) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(inputs);
-
-        // Check account
-        if (!userState.accounts.includes(inputs.email.toLowerCase())) {
-            usersDispatch({
-                type:"REGISTER", 
-                email: inputs.email,
-            });
+        if (inputs.email) {
+            // Check account
+            if (!userState.accounts.includes(inputs.email.toLowerCase())) {
+                usersDispatch({
+                    type:"REGISTER", 
+                    email: inputs.email,
+                });
+            } else {
+                usersDispatch({
+                    type:"AUTHENTICATE", 
+                    email: inputs.email,
+                });
+            };
+            callback(Date());
         }
-
-        usersDispatch({
-            type:"AUTHENTICATE", 
-            email: inputs.email,
-        });
-
-        callback(Date());
     }
 
     return (
+        <>
+        <h1>{userState.currentUser}</h1>
         <form onSubmit={handleSubmit}>
             <table>
                 <tbody>
@@ -53,6 +54,7 @@ function Login({callback}) {
             </table>
             <input type="submit" />
         </form>
+        </>
     )
 }
 

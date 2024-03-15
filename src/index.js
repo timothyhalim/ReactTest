@@ -8,35 +8,26 @@ import Contact from "./pages/Contact";
 import NoPage from "./pages/NoPage";
 import Login from "./pages/Login";
 
-import CustomContext from './context';
-import {reducer, initialState} from './reducer';
+import {CustomContextProvider} from './context';
 
 const App = () => {
-  const [update, forceUpdate] = React.useState("")
-  const [userState, usersDispatch ] = React.useReducer(reducer, initialState);
+  const [, forceUpdate] = React.useState("")
 
-  const providerState = {userState, usersDispatch};
-
-  console.log(userState.currentUser);
-
-  if (userState.currentUser) {
-    return (
-      <BrowserRouter>
-        <CustomContext.Provider value={providerState} >
-          <Routes>
-            <Route path="/" element={<Layout />}>
-              <Route index element={<Home />} />
-              <Route path="blogs" element={<Blogs />} />
-              <Route path="contact" element={<Contact />} />
-              <Route path="*" element={<NoPage />} />
-            </Route>
-          </Routes>
-        </CustomContext.Provider>
-      </BrowserRouter>
-    )
-  } else {
-    return <Login callback={forceUpdate}/>
-  }
+  return (
+    <BrowserRouter>
+      <CustomContextProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="blogs" element={<Blogs />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="*" element={<NoPage />} />
+          </Route>
+        </Routes>
+        <Login callback={forceUpdate}/>
+      </CustomContextProvider>
+    </BrowserRouter>
+  )
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
